@@ -1,0 +1,14 @@
+{
+  "name": "cpr-design",
+  "description": "CP-research Design System Marketplace",
+  "owner": {
+    "name": "CP-research"
+  },
+  "plugins": [
+    {
+      "name": "muses",
+      "source": ".",
+      "description": "CPR Automation Design System — Layout, Color, Typography standards"
+    }
+  ]
+}
