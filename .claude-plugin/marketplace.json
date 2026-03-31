@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "muses",
-      "source": ".",
+      "source": "./plugins/muses",
       "description": "CPR Automation Design System — Layout, Color, Typography standards"
     }
   ]
