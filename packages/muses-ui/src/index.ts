@@ -16,6 +16,7 @@ export {
   type SidebarNavItem,
   type SidebarNavGroup,
   type SidebarEntry,
+  type SidebarProfile,
 } from "./components/Sidebar";
 export {
   Header,

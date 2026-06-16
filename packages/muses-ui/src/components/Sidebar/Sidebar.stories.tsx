@@ -45,7 +45,7 @@ const meta = {
   component: Sidebar,
   parameters: { layout: "fullscreen" },
   args: {
-    serviceName: "CPR Automation",
+    serviceName: "storybook",
     version: "1.2.3",
     items,
   },
@@ -65,6 +65,18 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 export const Collapsed: Story = { args: { defaultCollapsed: true } };
+
+const profile = {
+  name: "Kevin Lim",
+  email: "kevin.lim@counterpointresearch.com",
+};
+
+/** With a profile footer: avatar + name/email + logout. */
+export const WithProfile: Story = { args: { profile } };
+
+export const WithProfileCollapsed: Story = {
+  args: { profile, defaultCollapsed: true },
+};
 
 export const FlatItemsOnly: Story = {
   args: {

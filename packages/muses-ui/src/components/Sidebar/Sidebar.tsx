@@ -1,10 +1,5 @@
 import { forwardRef, useState } from "react";
-import {
-  ChevronDown,
-  PanelLeft,
-  PanelLeftClose,
-  type LucideIcon,
-} from "lucide-react";
+import { ChevronDown, LogOut, type LucideIcon } from "lucide-react";
 import { cn } from "../../lib/cn";
 
 export interface SidebarNavItem {
@@ -29,6 +24,24 @@ function isGroup(entry: SidebarEntry): entry is SidebarNavGroup {
   return Array.isArray((entry as SidebarNavGroup).items);
 }
 
+/** Profile footer: avatar + name/email + logout. */
+export interface SidebarProfile {
+  name: string;
+  email: string;
+  /** Avatar image URL; falls back to initials when omitted. */
+  avatarUrl?: string;
+  onLogout?: () => void;
+}
+
+function initials(name: string): string {
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
 export interface SidebarProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "onChange"> {
   /** Service name shown next to the logo (hidden when collapsed on desktop). */
@@ -39,6 +52,8 @@ export interface SidebarProps
   items: SidebarEntry[];
   /** Logo node (defaults to a brand square). */
   logo?: React.ReactNode;
+  /** Optional profile footer (avatar + name/email + logout). */
+  profile?: SidebarProfile;
   /** Controlled desktop collapsed state. Omit for uncontrolled. */
   collapsed?: boolean;
   /** Initial collapsed state when uncontrolled (default false). */
@@ -130,6 +145,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
       version,
       items,
       logo,
+      profile,
       collapsed: controlledCollapsed,
       defaultCollapsed = false,
       onCollapsedChange,
@@ -179,11 +195,20 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
           )}
           {...props}
         >
-          {/* Header: logo + service name + version + collapse toggle */}
+          {/* Header: logo (click to collapse/expand) + service name + version */}
           <div className="flex h-14 items-center gap-2 border-b border-border px-3">
-            <div className={cn("shrink-0", collapsed && "lg:hidden")}>
+            <button
+              type="button"
+              onClick={toggle}
+              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-expanded={!collapsed}
+              className={cn(
+                "shrink-0 rounded-lg transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20",
+                collapsed && "lg:mx-auto",
+              )}
+            >
               {logo ?? <DefaultLogo />}
-            </div>
+            </button>
             <div
               className={cn(
                 "flex min-w-0 flex-1 items-baseline gap-1.5",
@@ -197,22 +222,6 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                 v{version}
               </span>
             </div>
-            <button
-              type="button"
-              onClick={toggle}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              aria-expanded={!collapsed}
-              className={cn(
-                "hidden shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-slate-50 hover:text-text-main lg:flex",
-                collapsed && "lg:mx-auto",
-              )}
-            >
-              {collapsed ? (
-                <PanelLeft className="h-5 w-5" />
-              ) : (
-                <PanelLeftClose className="h-5 w-5" />
-              )}
-            </button>
           </div>
 
           {/* Expanded nav (mobile always; desktop when expanded) */}
@@ -267,6 +276,54 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
               })}
             </ul>
           </nav>
+
+          {/* Profile footer: avatar + name/email + logout */}
+          {profile && (
+            <div className="border-t border-border p-3">
+              <div
+                className={cn(
+                  "flex items-center gap-2.5",
+                  collapsed && "lg:justify-center",
+                )}
+              >
+                {profile.avatarUrl ? (
+                  <img
+                    src={profile.avatarUrl}
+                    alt={profile.name}
+                    className="h-9 w-9 shrink-0 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                    {initials(profile.name)}
+                  </div>
+                )}
+                <div
+                  className={cn(
+                    "flex min-w-0 flex-1 items-center gap-2",
+                    collapsed && "lg:hidden",
+                  )}
+                >
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <span className="truncate text-sm font-medium text-text-main">
+                      {profile.name}
+                    </span>
+                    <span className="truncate text-xs text-text-muted">
+                      {profile.email}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={profile.onLogout}
+                    aria-label="Log out"
+                    title="Log out"
+                    className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-slate-50 hover:text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </aside>
       </>
     );

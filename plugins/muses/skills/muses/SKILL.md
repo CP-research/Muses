@@ -73,14 +73,12 @@ Tech Stack: React + TailwindCSS v4 + lucide-react.
 - 전환 애니메이션: `duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]`
 
 **구조 (위→아래):**
-1. **헤더 영역 (로고 + 서비스명 + 버전 + 접기 토글)** — 상단 고정, `h-14 px-3 border-b border-border`, `flex items-center gap-2`
-   - 로고: `h-8 w-8` (SVG 또는 이미지)
+1. **헤더 영역 (로고 + 서비스명 + 버전)** — 상단 고정, `h-14 px-3 border-b border-border`, `flex items-center gap-2`
+   - **로고 = 접기/펼치기 토글**: 로고를 `<button>`으로 감싸 클릭 시 사이드바 접힘/펼침 토글 (`onCollapsedChange` 또는 내부 상태). 별도 토글 아이콘은 두지 않는다.
+     - 로고: `h-8 w-8` (SVG 또는 이미지), 버튼: `shrink-0 rounded-lg hover:opacity-70 focus-visible:ring-2 focus-visible:ring-primary/20`
    - 서비스명: `text-sm font-bold tracking-tight text-text-main`
    - **버전**: 서비스명 **바로 오른쪽**에 인라인 표시 — `text-[10px] font-semibold text-text-muted`, 형식 `v{major}.{minor}.{patch}` (서비스명 컨테이너는 `flex items-baseline gap-1.5`)
-   - **접기 토글 버튼**: 헤더 우측 끝, `hidden lg:flex shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-slate-50 hover:text-text-main`
-     - 확장 상태: `PanelLeftClose` 아이콘 / 축소 상태: `PanelLeft` 아이콘 (`h-5 w-5`)
-     - 클릭 시 사이드바 접힘/펼침 토글 (`onCollapsedChange` 또는 내부 상태)
-   - 축소 시(`lg:`): 로고·서비스명·버전 `lg:hidden`, 토글 버튼만 `lg:mx-auto`로 중앙 표시
+   - 축소 시(`lg:`): 서비스명·버전 `lg:hidden`, 로고 버튼만 `lg:mx-auto`로 중앙 표시 (로고 클릭으로 다시 펼침)
 2. **네비게이션** — `flex-1 overflow-y-auto py-2 px-2`
    - **단일 메뉴 아이템(leaf)**: `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium`, 아이콘 `h-5 w-5 shrink-0`
      - 기본: `text-text-muted hover:bg-slate-50 hover:text-text-main` / 활성: `bg-primary/10 text-primary font-semibold`
@@ -114,7 +112,7 @@ shadow-[4px_0_24px_-2px_rgba(0,0,0,0.15)]
 
 - 로고 + 서비스명 + 버전은 한 줄에 `flex items-center gap-2` (서비스명·버전은 `flex items-baseline gap-1.5`)
 - 서비스명: `text-sm font-bold tracking-tight text-text-main`, 버전: `text-[10px] font-semibold text-text-muted`
-- 축소 모드: 로고·서비스명·버전 숨김, 접기 토글 아이콘만 중앙 표시
+- 축소 모드: 서비스명·버전 숨김, 로고 버튼만 중앙 표시 (로고 클릭으로 펼침)
 
 ### 1-5. Mobile Responsive
 
@@ -146,7 +144,7 @@ transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
 - **버전**: 서비스명 **바로 오른쪽**에 인라인 표시 (하단 푸터 아님)
 - 버전 형식: `v{package.json version}` (예: `v1.2.3`)
 - 버전 스타일: `text-[10px] font-semibold text-text-muted`
-- 축소 시: 서비스명·버전 모두 숨김 (헤더에 접기 토글 아이콘만 남음)
+- 축소 시: 서비스명·버전 모두 숨김 (헤더에 로고 버튼만 남으며, 로고 클릭으로 펼침)
 
 ### 1-7. Collapsible Categories (1차 카테고리)
 
@@ -164,6 +162,17 @@ transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
 - 기본/활성 스타일은 일반 leaf와 동일
 
 **축소(rail) 모드:** 카테고리 헤더는 숨기고, 모든 하위 leaf를 평면 아이콘 리스트로 표시.
+
+### 1-8. Profile Footer (선택)
+
+사이드바 **하단 고정** 프로필 영역. 좌→우 순서: **동그라미 아바타 → 이름·이메일 → 로그아웃**.
+
+- 컨테이너: `border-t border-border p-3`, 내부 `flex items-center gap-2.5`
+- **아바타**: `h-9 w-9 rounded-full` — 이미지(`object-cover`) 또는 이니셜 대체(`bg-primary/10 text-primary text-xs font-semibold`)
+- **이름**: `text-sm font-medium text-text-main truncate`
+- **이메일**: `text-xs text-text-muted truncate` (이름 아래 세로 정렬, `flex flex-col`)
+- **로그아웃**: `LogOut` 아이콘 버튼 (`h-4 w-4`), `p-1.5 rounded-lg text-text-muted hover:bg-slate-50 hover:text-text-main`
+- 축소 시(`lg:`): 아바타만 중앙(`lg:justify-center`), 이름·이메일·로그아웃 `lg:hidden`
 
 ---
 

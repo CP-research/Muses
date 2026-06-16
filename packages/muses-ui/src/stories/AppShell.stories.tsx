@@ -60,9 +60,13 @@ export const Default: Story = {
     return (
       <div className="flex min-h-screen bg-background">
         <Sidebar
-          serviceName="CPR Automation"
+          serviceName="storybook"
           version="1.2.3"
           items={items}
+          profile={{
+            name: "Kevin Lim",
+            email: "kevin.lim@counterpointresearch.com",
+          }}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
           mobileOpen={mobileOpen}
