@@ -16,36 +16,51 @@ Tech Stack: React + TailwindCSS v4 + lucide-react.
 
 ## 0. Source of Truth — 컴포넌트 라이브러리
 
-이 디자인 시스템은 **실제 컴포넌트 라이브러리로 구현**되어 있다. 아래 스펙(섹션 1~3)을 프로즈에서 재구현하지 말고, **먼저 라이브러리 컴포넌트를 사용**하라.
+이 디자인 시스템은 **실제 컴포넌트 라이브러리로 구현**되어 있다: `@cp-research/muses-ui` (React + Tailwind v4, GitHub Packages private).
 
-- **npm 패키지**: `@cp-research/muses-ui` — **GitHub Packages(private)**에 publish
-  - 설치 전 프로젝트 `.npmrc`에 스코프 레지스트리 등록 필요:
-    ```ini
-    @cp-research:registry=https://npm.pkg.github.com
-    //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}   # read:packages 스코프 PAT
-    ```
 - **Storybook (시각적 진실의 원천)**: https://storybook.counterpointresearch.com
 - **소스 코드**: 이 repo의 `packages/muses-ui/src/components/`
 
-### 사용 우선순위
+UI 작업(빌드/수정) 요청을 받으면, 스펙을 프로즈로 재구현하기 전에 **먼저 패키지를 자동 설치·셋업**하라. 아래 순서를 따른다.
 
-1. **컴포넌트가 있으면 import해서 사용** — `Sidebar`, `Header`, `Breadcrumb`, `Button`, `Badge`, `Input`, `Card`(+ `CardHeader`/`CardTitle`/`CardDescription`/`CardContent`/`CardFooter`)
+### 동작 순서 (패키지 자동 설치 우선)
 
-   ```tsx
-   import { Sidebar, Header, Card, Button, Badge } from "@cp-research/muses-ui";
-   ```
+**1단계 — 설치 여부 확인**
+프로젝트 `package.json` / `node_modules`에 `@cp-research/muses-ui`가 이미 있으면 4단계로 건너뛴다.
 
-   Tailwind v4 앱 CSS에 토큰을 가져온다:
+**2단계 — 자동 설치 (없을 때, React 프로젝트)**
+다음을 **묻지 말고 순서대로 실행**한다. 단, 인증 토큰이 없으면 2-b에서 한 번만 사용자에게 요청한다.
 
-   ```css
-   @import "tailwindcss";
-   @import "@cp-research/muses-ui/theme.css";
-   @source "../node_modules/@cp-research/muses-ui/dist";
-   ```
+  a. 프로젝트 루트 `.npmrc`에 스코프 레지스트리가 없으면 추가:
+  ```ini
+  @cp-research:registry=https://npm.pkg.github.com
+  //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+  ```
+  b. **인증 토큰 확인** — 환경변수 `GITHUB_TOKEN` 또는 사용자 `~/.npmrc`에 `npm.pkg.github.com` 토큰이 이미 있으면 그대로 사용한다. **둘 다 없을 때만** 사용자에게 "GitHub Packages 설치용 `read:packages` 스코프 PAT가 필요하다"고 알리고 값을 받는다. (← 유일하게 사람 개입이 필요한 단계. 받은 값은 프로젝트 `.npmrc`가 아니라 `~/.npmrc` 또는 셸 환경변수에 두도록 안내해 커밋 유출을 막는다.)
+  c. `npm install @cp-research/muses-ui` 실행.
+  d. Tailwind v4가 셋업돼 있지 않으면 `npm install -D tailwindcss @tailwindcss/vite` 후 빌드 도구에 플러그인 등록(Vite: `@tailwindcss/vite`).
+  e. 메인 CSS에 엔진 + 토큰 + 라이브러리 소스 등록:
+  ```css
+  @import "tailwindcss";
+  @import "@cp-research/muses-ui/theme.css";
+  @source "../node_modules/@cp-research/muses-ui/dist";
+  ```
+  f. HTML `<head>`에 Plus Jakarta Sans 폰트 로드(섹션 3-1 참조).
 
-2. **패키지를 쓸 수 없는 환경**(단일 HTML, 다른 스택 등)이면 → 아래 스펙(섹션 1~3)에 따라 직접 구현하되, `packages/muses-ui/src/components/`의 구현을 참조해 클래스/토큰을 정확히 일치시킨다.
+**3단계 — 설치 검증**
+`npm install`이 실패하면(401/403 = 토큰 권한 부족, 404 = 레지스트리 미설정) 원인을 사용자에게 알리고 토큰을 다시 확인한다. 네트워크/스택 문제로 끝내 불가하면 5단계로.
 
-3. **새 컴포넌트가 필요하면** → 라이브러리에 추가하고 Storybook 스토리를 함께 작성한다(`*.stories.tsx`). 스펙과 라이브러리를 동기화 상태로 유지한다.
+**4단계 — 컴포넌트 사용**
+```tsx
+import { Sidebar, Header, Breadcrumb, Card, Button, Badge, Input } from "@cp-research/muses-ui";
+// Card 하위: CardHeader / CardTitle / CardDescription / CardContent / CardFooter
+```
+
+**5단계 — 설치가 끝내 불가할 때만**(사용자가 PAT 제공 거부 / React가 아닌 스택 / 단일 HTML / 오프라인)
+아래 스펙(섹션 1~3)대로 직접 구현하되, `packages/muses-ui/src/components/`의 구현을 참조해 클래스·토큰을 정확히 일치시킨다.
+
+**6단계 — 새 컴포넌트가 필요하면**
+라이브러리에 추가하고 Storybook 스토리(`*.stories.tsx`)를 함께 작성해 스펙과 동기화한다.
 
 > 섹션 1~3은 라이브러리 컴포넌트의 **기반 규격**이다. 컴포넌트를 직접 만들거나 검토할 때 이 토큰/스케일을 따른다.
 
