@@ -1,6 +1,6 @@
 {
   "name": "@cp-research/muses-ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CPR Automation Design System — React + Tailwind v4 component library (Muses)",
   "license": "UNLICENSED",
   "private": false,
