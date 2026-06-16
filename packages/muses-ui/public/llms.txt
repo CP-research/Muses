@@ -1,0 +1,26 @@
+# Muses — CPR Automation Design System
+
+> 사내 어드민/자동화 플랫폼을 위한 디자인 시스템. React + TailwindCSS v4 + lucide-react로 구현된 컴포넌트 라이브러리(`@cp-research/muses-ui`)와 레이아웃·색상·타이포그래피 규격으로 구성된다. UI를 만들거나 리뷰할 때 이 규격을 그대로 따른다.
+
+핵심 토큰: primary `#EE1C24`, secondary `#913134`, background `#F8FAFC`, surface `#FFFFFF`, text-main `#000000`, text-muted `#717171`, accent `#10B981`, border `#E2E2E2`. 폰트: Plus Jakarta Sans. 컴포넌트는 프로즈에서 재구현하지 말고 `@cp-research/muses-ui`에서 import해 사용한다.
+
+## Docs
+
+- [디자인 시스템 규격 (SKILL.md)](https://raw.githubusercontent.com/CP-research/Muses/main/plugins/muses/skills/muses/SKILL.md): 레이아웃(사이드바·헤더·브레드크럼·프로필), 색상 토큰/상태색, 타이포그래피 스케일 — 진실의 원천
+- [컴포넌트 라이브러리 README](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/README.md): 설치(GitHub Packages), Tailwind v4 셋업, 사용법
+- [Live Storybook](https://storybook.counterpointresearch.com): 컴포넌트 시각 레퍼런스 + 인터랙티브 예제
+- [npm 패키지 (GitHub Packages, private)](https://github.com/orgs/CP-research/packages/npm/package/muses-ui): `@cp-research/muses-ui`
+
+## Components (source)
+
+- [Sidebar](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Sidebar/Sidebar.tsx): 로고-클릭 접기/펼치기, 인라인 버전, 접이식 1차 카테고리, 선택적 프로필 푸터, 모바일 오버레이
+- [Header / Breadcrumb](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Header/Header.tsx): sticky 헤더 + 브레드크럼 + 모바일 메뉴 버튼
+- [Button](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Button/Button.tsx): primary / secondary / link, sm·md·lg
+- [Badge](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Badge/Badge.tsx): draft·warning·danger·success·info 상태색
+- [Input](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Input/Input.tsx): default→hover→focus→disabled 상태
+- [Card](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Card/Card.tsx): 브랜드 그림자 surface 카드 + CardHeader/Title/Description/Content/Footer
+- [Design tokens (theme.css)](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/styles/theme.css): Tailwind v4 @theme 토큰 정의
+
+## Optional
+
+- [llms-full.txt](https://storybook.counterpointresearch.com/llms-full.txt): 전체 규격(SKILL.md) + 라이브러리 README를 한 파일로 인라인한 버전 (큰 컨텍스트용)

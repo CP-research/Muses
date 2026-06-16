@@ -32,8 +32,9 @@
   },
   "scripts": {
     "build": "vite build && tsc -p tsconfig.build.json --emitDeclarationOnly && cp src/styles/theme.css dist/theme.css",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "gen:llms": "node scripts/gen-llms.mjs",
+    "storybook": "npm run gen:llms && storybook dev -p 6006",
+    "build-storybook": "npm run gen:llms && storybook build",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build"
   },

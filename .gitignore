@@ -4,3 +4,6 @@ storybook-static/
 *.log
 .DS_Store
 *.tsbuildinfo
+
+# generated at build from SKILL.md + README
+packages/muses-ui/public/llms-full.txt

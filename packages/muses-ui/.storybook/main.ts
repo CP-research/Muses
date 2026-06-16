@@ -6,6 +6,8 @@ const config: StorybookConfig = {
     "../src/**/*.mdx",
     "../src/**/*.stories.@(ts|tsx)",
   ],
+  // Serve public/ at the site root so /llms.txt and /llms-full.txt are reachable.
+  staticDirs: ["../public"],
   addons: ["@storybook/addon-docs"],
   framework: {
     name: "@storybook/react-vite",
