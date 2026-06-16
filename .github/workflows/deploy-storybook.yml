@@ -7,7 +7,9 @@ name: Deploy Storybook
 #   CLOUDFLARE_ACCOUNT_ID  — your Cloudflare account ID
 #
 # The Pages project is created automatically on first deploy under the name
-# `muses-storybook`. Production URL: https://muses-storybook.pages.dev
+# `muses-storybook` (default URL https://muses-storybook.pages.dev).
+# Production custom domain: https://storybook.counterpointresearch.com
+# (attach it once in the Cloudflare dashboard → Pages → Custom domains).
 #
 # Alternative (no secrets): connect the repo in the Cloudflare dashboard with
 #   build command:    npm ci && npm run build-storybook

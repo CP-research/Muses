@@ -2,7 +2,7 @@
 
 사내 어드민/자동화 플랫폼을 위한 디자인 시스템. **Claude Code 스킬 + 실제 컴포넌트 라이브러리 + Storybook**으로 구성된다.
 
-- 📖 **Storybook**: https://muses-storybook.pages.dev (시각적 진실의 원천)
+- 📖 **Storybook**: https://storybook.counterpointresearch.com (시각적 진실의 원천)
 - 📦 **컴포넌트 라이브러리**: `@cp-research/muses-ui` (`packages/muses-ui/`)
 - 🤖 **Claude Code 스킬**: `/muses` (`plugins/muses/`)
 
@@ -38,7 +38,16 @@ npm run build             # npm 라이브러리 빌드 → dist/
 | `CLOUDFLARE_API_TOKEN` | "Cloudflare Pages: Edit" 권한 토큰 |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 계정 ID |
 
-Pages 프로젝트(`muses-storybook`)는 첫 배포 시 자동 생성된다. → `https://muses-storybook.pages.dev`
+Pages 프로젝트(`muses-storybook`)는 첫 배포 시 자동 생성된다(기본 URL `https://muses-storybook.pages.dev`).
+
+### 커스텀 도메인 — `storybook.counterpointresearch.com`
+
+첫 배포 후 Cloudflare 대시보드에서 한 번만 연결한다:
+
+1. **Workers & Pages → `muses-storybook` → Custom domains → Set up a custom domain**
+2. `storybook.counterpointresearch.com` 입력
+3. `counterpointresearch.com`이 Cloudflare DNS에서 관리 중이면 CNAME 레코드가 자동 추가된다.
+   외부 DNS면 안내되는 CNAME(`muses-storybook.pages.dev` 대상)을 직접 등록한다.
 
 > 시크릿 없이 배포하려면 Cloudflare 대시보드에서 repo를 연결하고 — Root: `packages/muses-ui`, Build: `npm ci && npm run build-storybook`, Output: `storybook-static` — 로 설정해도 된다.
 
