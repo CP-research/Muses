@@ -44,10 +44,26 @@ jobs:
         working-directory: packages/muses-ui
         run: npm run build-storybook
 
+      # `wrangler pages deploy` does not create the project, so ensure it exists
+      # (idempotent: create only when the project is not already present).
+      - name: Ensure Cloudflare Pages project exists
+        working-directory: packages/muses-ui
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if npx --yes wrangler@3 pages project list | grep -q -E '\bmuses-storybook\b'; then
+            echo "Project muses-storybook already exists."
+          else
+            echo "Creating Pages project muses-storybook…"
+            npx --yes wrangler@3 pages project create muses-storybook \
+              --production-branch=main
+          fi
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: packages/muses-ui
-          command: pages deploy storybook-static --project-name=muses-storybook
+          command: pages deploy storybook-static --project-name=muses-storybook --branch=main --commit-dirty=true

@@ -38,7 +38,7 @@ npm run build             # npm 라이브러리 빌드 → dist/
 | `CLOUDFLARE_API_TOKEN` | "Cloudflare Pages: Edit" 권한 토큰 |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 계정 ID |
 
-Pages 프로젝트(`muses-storybook`)는 첫 배포 시 자동 생성된다(기본 URL `https://muses-storybook.pages.dev`).
+Pages 프로젝트(`muses-storybook`)는 워크플로가 첫 실행 시 없으면 생성한다(기본 URL `https://muses-storybook.pages.dev`).
 
 ### 커스텀 도메인 — `storybook.counterpointresearch.com`
 
