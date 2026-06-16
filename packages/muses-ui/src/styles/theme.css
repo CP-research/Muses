@@ -1,0 +1,22 @@
+/**
+ * Muses design tokens — Tailwind v4 @theme layer.
+ *
+ * Consumers (Tailwind v4 apps) should `@import "@cp-research/muses-ui/theme.css"`
+ * into their main CSS so that semantic utilities (bg-primary, text-text-main,
+ * border-border, font-sans, …) and the brand font are available.
+ */
+@theme {
+  /* Color tokens — each key becomes a Tailwind color (bg-*, text-*, border-*). */
+  --color-background: #f8fafc; /* page background (Slate 50) */
+  --color-surface: #ffffff; /* card / panel background */
+  --color-primary: #ee1c24; /* brand primary (Red) */
+  --color-secondary: #913134; /* brand secondary (Dark Red) */
+  --color-text-main: #000000; /* body text */
+  --color-text-muted: #717171; /* secondary text */
+  --color-accent: #10b981; /* success / positive (Emerald 500) */
+  --color-border: #e2e2e2; /* borders */
+
+  /* Brand font — generates `font-sans`. */
+  --font-sans:
+    "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}

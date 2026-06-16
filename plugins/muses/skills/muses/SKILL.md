@@ -14,6 +14,38 @@ Tech Stack: React + TailwindCSS v4 + lucide-react.
 
 ---
 
+## 0. Source of Truth — 컴포넌트 라이브러리
+
+이 디자인 시스템은 **실제 컴포넌트 라이브러리로 구현**되어 있다. 아래 스펙(섹션 1~3)을 프로즈에서 재구현하지 말고, **먼저 라이브러리 컴포넌트를 사용**하라.
+
+- **npm 패키지**: `@cp-research/muses-ui` (React + Tailwind v4)
+- **Storybook (시각적 진실의 원천)**: https://muses-storybook.pages.dev
+- **소스 코드**: 이 repo의 `packages/muses-ui/src/components/`
+
+### 사용 우선순위
+
+1. **컴포넌트가 있으면 import해서 사용** — `Sidebar`, `Header`, `Breadcrumb`, `Button`, `Badge`, `Input`, `Card`(+ `CardHeader`/`CardTitle`/`CardDescription`/`CardContent`/`CardFooter`)
+
+   ```tsx
+   import { Sidebar, Header, Card, Button, Badge } from "@cp-research/muses-ui";
+   ```
+
+   Tailwind v4 앱 CSS에 토큰을 가져온다:
+
+   ```css
+   @import "tailwindcss";
+   @import "@cp-research/muses-ui/theme.css";
+   @source "../node_modules/@cp-research/muses-ui/dist";
+   ```
+
+2. **패키지를 쓸 수 없는 환경**(단일 HTML, 다른 스택 등)이면 → 아래 스펙(섹션 1~3)에 따라 직접 구현하되, `packages/muses-ui/src/components/`의 구현을 참조해 클래스/토큰을 정확히 일치시킨다.
+
+3. **새 컴포넌트가 필요하면** → 라이브러리에 추가하고 Storybook 스토리를 함께 작성한다(`*.stories.tsx`). 스펙과 라이브러리를 동기화 상태로 유지한다.
+
+> 섹션 1~3은 라이브러리 컴포넌트의 **기반 규격**이다. 컴포넌트를 직접 만들거나 검토할 때 이 토큰/스케일을 따른다.
+
+---
+
 ## 1. Layout
 
 ### 1-1. Page Structure

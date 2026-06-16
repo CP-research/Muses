@@ -1,6 +1,46 @@
 # Muses — CPR Automation Design System
 
-사내 어드민/자동화 플랫폼을 위한 Claude Code 디자인 시스템 스킬.
+사내 어드민/자동화 플랫폼을 위한 디자인 시스템. **Claude Code 스킬 + 실제 컴포넌트 라이브러리 + Storybook**으로 구성된다.
+
+- 📖 **Storybook**: https://muses-storybook.pages.dev (시각적 진실의 원천)
+- 📦 **컴포넌트 라이브러리**: `@cp-research/muses-ui` (`packages/muses-ui/`)
+- 🤖 **Claude Code 스킬**: `/muses` (`plugins/muses/`)
+
+## 저장소 구조
+
+```
+Muses/
+├── plugins/muses/          # Claude Code 플러그인 (디자인 시스템 스킬)
+├── packages/muses-ui/      # React + Tailwind v4 컴포넌트 라이브러리 + Storybook
+└── .github/workflows/      # Cloudflare Pages 배포 (Storybook)
+```
+
+## 컴포넌트 라이브러리
+
+```bash
+cd packages/muses-ui
+npm install
+npm run storybook         # 로컬 개발 (:6006)
+npm run build-storybook   # 정적 사이트 빌드 → storybook-static/
+npm run build             # npm 라이브러리 빌드 → dist/
+```
+
+자세한 사용법은 [`packages/muses-ui/README.md`](packages/muses-ui/README.md) 참조.
+
+## Storybook 배포 (Cloudflare Pages)
+
+`main` 브랜치에 push하면 `.github/workflows/deploy-storybook.yml`이 자동 배포한다.
+
+**필요한 GitHub Actions 시크릿** (Settings → Secrets and variables → Actions):
+
+| 시크릿 | 설명 |
+|--------|------|
+| `CLOUDFLARE_API_TOKEN` | "Cloudflare Pages: Edit" 권한 토큰 |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 계정 ID |
+
+Pages 프로젝트(`muses-storybook`)는 첫 배포 시 자동 생성된다. → `https://muses-storybook.pages.dev`
+
+> 시크릿 없이 배포하려면 Cloudflare 대시보드에서 repo를 연결하고 — Root: `packages/muses-ui`, Build: `npm ci && npm run build-storybook`, Output: `storybook-static` — 로 설정해도 된다.
 
 ## 설치
 

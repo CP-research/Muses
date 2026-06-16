@@ -1,0 +1,18 @@
+/**
+ * Storybook-only stylesheet: pulls in the full Tailwind engine plus the Muses
+ * tokens and base styles. Not part of the published package — consumers bring
+ * their own Tailwind setup and import `theme.css` for the tokens.
+ */
+@import "tailwindcss";
+@import "./theme.css";
+
+@layer base {
+  html,
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-text-main);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}

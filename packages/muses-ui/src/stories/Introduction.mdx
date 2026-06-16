@@ -1,0 +1,47 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Introduction" />
+
+# Muses — CPR Automation Design System
+
+사내 어드민/자동화 플랫폼을 위한 디자인 시스템.
+
+**Tech stack:** React + TailwindCSS v4 + lucide-react.
+
+## 사용법
+
+```bash
+npm install @cp-research/muses-ui
+```
+
+```tsx
+import { Button, Sidebar, Header, Card } from "@cp-research/muses-ui";
+```
+
+Tailwind v4 앱의 메인 CSS에 토큰을 가져옵니다:
+
+```css
+@import "tailwindcss";
+@import "@cp-research/muses-ui/theme.css";
+
+/* 라이브러리 클래스가 트리쉐이킹되지 않도록 소스 등록 */
+@source "../node_modules/@cp-research/muses-ui/dist";
+```
+
+그리고 Plus Jakarta Sans 폰트를 로드합니다:
+
+```html
+<link
+  href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+```
+
+## 둘러보기
+
+- **Foundations / Colors** — 시맨틱 토큰 8종, 상태 색상 5종
+- **Foundations / Typography** — Plus Jakarta Sans, 8단계 타입 스케일
+- **Components** — Button, Badge, Input, Card
+- **Layout** — Sidebar, Header(Breadcrumb), AppShell(전체 조합)
+
+이 Storybook이 디자인 시스템의 **시각적 진실의 원천**입니다. 컴포넌트 동작/규격이 바뀌면 여기서 먼저 확인하세요.

@@ -1,0 +1,51 @@
+name: Deploy Storybook
+
+# Builds the Muses Storybook and deploys it to Cloudflare Pages.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN   — token with the "Cloudflare Pages: Edit" permission
+#   CLOUDFLARE_ACCOUNT_ID  — your Cloudflare account ID
+#
+# The Pages project is created automatically on first deploy under the name
+# `muses-storybook`. Production URL: https://muses-storybook.pages.dev
+#
+# Alternative (no secrets): connect the repo in the Cloudflare dashboard with
+#   build command:    npm ci && npm run build-storybook
+#   build output dir: packages/muses-ui/storybook-static
+#   root directory:   packages/muses-ui
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: packages/muses-ui/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/muses-ui
+        run: npm ci
+
+      - name: Build Storybook
+        working-directory: packages/muses-ui
+        run: npm run build-storybook
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: packages/muses-ui
+          command: pages deploy storybook-static --project-name=muses-storybook
