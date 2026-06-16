@@ -7,7 +7,7 @@ import {
   FileText,
   Settings,
 } from "lucide-react";
-import { Sidebar, type SidebarNavItem } from "../components/Sidebar/Sidebar";
+import { Sidebar, type SidebarEntry } from "../components/Sidebar/Sidebar";
 import { Header } from "../components/Header/Header";
 import {
   Card,
@@ -19,12 +19,21 @@ import {
 import { Badge } from "../components/Badge/Badge";
 import { Button } from "../components/Button/Button";
 
-const items: SidebarNavItem[] = [
+const items: SidebarEntry[] = [
   { label: "Dashboard", icon: LayoutDashboard, active: true },
-  { label: "Automations", icon: Workflow },
-  { label: "Data Sources", icon: Database },
-  { label: "Reports", icon: FileText },
-  { label: "Settings", icon: Settings },
+  {
+    label: "Operations",
+    items: [
+      { label: "Automations", icon: Workflow },
+      { label: "Data Sources", icon: Database },
+      { label: "Reports", icon: FileText },
+    ],
+  },
+  {
+    label: "Settings",
+    defaultOpen: false,
+    items: [{ label: "Preferences", icon: Settings }],
+  },
 ];
 
 const meta = {
@@ -55,6 +64,7 @@ export const Default: Story = {
           version="1.2.3"
           items={items}
           collapsed={collapsed}
+          onCollapsedChange={setCollapsed}
           mobileOpen={mobileOpen}
           onMobileClose={() => setMobileOpen(false)}
         />
@@ -73,13 +83,8 @@ export const Default: Story = {
             onMenuClick={() => setMobileOpen(true)}
             actions={
               <>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => setCollapsed((c) => !c)}
-                  className="hidden lg:inline-flex"
-                >
-                  {collapsed ? "Expand" : "Collapse"}
+                <Button size="sm" variant="secondary">
+                  Export
                 </Button>
                 <Button size="sm">New job</Button>
               </>

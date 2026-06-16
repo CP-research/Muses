@@ -73,19 +73,19 @@ Tech Stack: React + TailwindCSS v4 + lucide-react.
 - 전환 애니메이션: `duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]`
 
 **구조 (위→아래):**
-1. **로고 + 서비스명 영역** — 상단 고정, `h-14 px-4 border-b border-border`
+1. **헤더 영역 (로고 + 서비스명 + 버전 + 접기 토글)** — 상단 고정, `h-14 px-3 border-b border-border`, `flex items-center gap-2`
    - 로고: `h-8 w-8` (SVG 또는 이미지)
-   - 서비스명: `text-sm font-bold text-text-main` (축소 시 숨김)
+   - 서비스명: `text-sm font-bold tracking-tight text-text-main`
+   - **버전**: 서비스명 **바로 오른쪽**에 인라인 표시 — `text-[10px] font-semibold text-text-muted`, 형식 `v{major}.{minor}.{patch}` (서비스명 컨테이너는 `flex items-baseline gap-1.5`)
+   - **접기 토글 버튼**: 헤더 우측 끝, `hidden lg:flex shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-slate-50 hover:text-text-main`
+     - 확장 상태: `PanelLeftClose` 아이콘 / 축소 상태: `PanelLeft` 아이콘 (`h-5 w-5`)
+     - 클릭 시 사이드바 접힘/펼침 토글 (`onCollapsedChange` 또는 내부 상태)
+   - 축소 시(`lg:`): 로고·서비스명·버전 `lg:hidden`, 토글 버튼만 `lg:mx-auto`로 중앙 표시
 2. **네비게이션** — `flex-1 overflow-y-auto py-2 px-2`
-   - 메뉴 아이템: `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium`
-   - 기본: `text-text-muted hover:bg-slate-50 hover:text-text-main`
-   - 활성: `bg-primary/10 text-primary font-semibold`
-   - 아이콘: `h-5 w-5 shrink-0`
-   - 라벨: 축소 시 `hidden`, 확장 시 `block`
-3. **버전 표기** — 하단 고정, `px-4 py-3 border-t border-border`
-   - 형식: `v{major}.{minor}.{patch}`
-   - 스타일: `text-xs text-text-muted`
-   - 축소 시: `text-[10px]` 중앙 정렬
+   - **단일 메뉴 아이템(leaf)**: `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium`, 아이콘 `h-5 w-5 shrink-0`
+     - 기본: `text-text-muted hover:bg-slate-50 hover:text-text-main` / 활성: `bg-primary/10 text-primary font-semibold`
+   - **1차 카테고리(접기 가능)** — 아래 `1-7` 참조
+   - 축소 시(`lg:`): 별도 rail로 모든 leaf 아이콘만 평면 표시(카테고리 헤더 없음), 아이콘 중앙 정렬 + `title`/`aria-label`로 라벨 제공
 
 **데스크톱 그림자:**
 ```
@@ -112,9 +112,9 @@ shadow-[4px_0_24px_-2px_rgba(0,0,0,0.15)]
 [Logo Icon] ServiceName
 ```
 
-- 로고와 서비스명은 한 줄에 `flex items-center gap-2`
-- 서비스명: `text-sm font-bold tracking-tight text-text-main`
-- 축소 모드: 로고 아이콘만 중앙 표시
+- 로고 + 서비스명 + 버전은 한 줄에 `flex items-center gap-2` (서비스명·버전은 `flex items-baseline gap-1.5`)
+- 서비스명: `text-sm font-bold tracking-tight text-text-main`, 버전: `text-[10px] font-semibold text-text-muted`
+- 축소 모드: 로고·서비스명·버전 숨김, 접기 토글 아이콘만 중앙 표시
 
 ### 1-5. Mobile Responsive
 
@@ -143,10 +143,27 @@ transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
 ### 1-6. Service Name & Version Display
 
 - **서비스명**: 사이드바 상단 로고 옆에 표시
-- **버전**: 사이드바 하단에 표시
+- **버전**: 서비스명 **바로 오른쪽**에 인라인 표시 (하단 푸터 아님)
 - 버전 형식: `v{package.json version}` (예: `v1.2.3`)
-- 버전 스타일: `text-xs text-text-muted`
-- 축소 시에도 버전은 표시 (축약: `text-[10px]` 중앙 정렬)
+- 버전 스타일: `text-[10px] font-semibold text-text-muted`
+- 축소 시: 서비스명·버전 모두 숨김 (헤더에 접기 토글 아이콘만 남음)
+
+### 1-7. Collapsible Categories (1차 카테고리)
+
+네비게이션 항목은 **단일 아이템(leaf)** 또는 **접을 수 있는 1차 카테고리(group)**로 구성된다.
+
+**카테고리 헤더 (작은 회색 글씨):**
+- `flex w-full items-center justify-between rounded-md px-3 pb-1 pt-3`
+- 텍스트: `text-[11px] font-semibold uppercase tracking-wider text-text-muted hover:text-text-main`
+- 우측에 `ChevronDown` (`h-3.5 w-3.5`) — 닫힘 시 `-rotate-90`, `transition-transform`
+- 클릭 시 하위 항목 펼침/접힘 토글
+
+**하위 항목 (소속을 보여주는 회색 세로줄):**
+- 컨테이너: `ml-4 flex flex-col gap-0.5 border-l border-border pl-2` → 왼쪽 `border-l border-border`가 소속 카테고리를 시각적으로 표시
+- 하위 leaf 아이콘은 약간 작게: `h-4 w-4` (top-level leaf는 `h-5 w-5`)
+- 기본/활성 스타일은 일반 leaf와 동일
+
+**축소(rail) 모드:** 카테고리 헤더는 숨기고, 모든 하위 leaf를 평면 아이콘 리스트로 표시.
 
 ---
 
