@@ -33,7 +33,7 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(
         type="button"
         onClick={onMenuClick}
         aria-label="Open navigation"
-        className="-ml-1 rounded-lg p-1.5 text-text-muted hover:bg-slate-50 hover:text-text-main lg:hidden"
+        className="-ml-1 cursor-pointer rounded-lg p-1.5 text-text-muted hover:bg-slate-50 hover:text-text-main lg:hidden"
       >
         <Menu className="h-5 w-5" />
       </button>

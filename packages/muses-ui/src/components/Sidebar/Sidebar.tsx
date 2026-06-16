@@ -79,7 +79,7 @@ function DefaultLogo() {
 
 const leafClasses = (active?: boolean) =>
   cn(
-    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium",
+    "flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium",
     active
       ? "bg-primary/10 font-semibold text-primary"
       : "text-text-muted hover:bg-slate-50 hover:text-text-main",
@@ -110,7 +110,7 @@ function NavGroup({ group }: { group: SidebarNavGroup }) {
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between rounded-md px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-wider text-text-muted transition-colors hover:text-text-main"
+        className="flex w-full cursor-pointer items-center justify-between rounded-md px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-wider text-text-muted transition-colors hover:text-text-main"
       >
         <span className="truncate">{group.label}</span>
         <ChevronDown
@@ -186,8 +186,8 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
         <aside
           ref={ref}
           className={cn(
-            "fixed inset-y-0 left-0 z-50 flex w-[260px] max-w-[85vw] flex-col border-r border-border bg-surface shadow-[4px_0_24px_-2px_rgba(0,0,0,0.15)]",
-            "lg:max-w-none lg:translate-x-0 lg:shadow-[4px_0_20px_-2px_rgba(238,28,36,0.06)]",
+            "fixed inset-y-0 left-0 z-50 flex w-[260px] max-w-[85vw] flex-col border-r border-border bg-surface",
+            "lg:max-w-none lg:translate-x-0",
             collapsed ? "lg:w-[72px]" : "lg:w-[260px]",
             mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
             TRANSITION,
@@ -203,7 +203,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
               aria-expanded={!collapsed}
               className={cn(
-                "shrink-0 rounded-lg transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20",
+                "shrink-0 cursor-pointer rounded-lg transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20",
                 collapsed && "lg:mx-auto",
               )}
             >
@@ -263,7 +263,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                       aria-label={item.label}
                       aria-current={item.active ? "page" : undefined}
                       className={cn(
-                        "flex justify-center rounded-lg py-2.5",
+                        "flex cursor-pointer justify-center rounded-lg py-2.5",
                         item.active
                           ? "bg-primary/10 text-primary"
                           : "text-text-muted hover:bg-slate-50 hover:text-text-main",
@@ -316,7 +316,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                     onClick={profile.onLogout}
                     aria-label="Log out"
                     title="Log out"
-                    className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-slate-50 hover:text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+                    className="shrink-0 cursor-pointer rounded-lg p-1.5 text-text-muted hover:bg-slate-50 hover:text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
                   >
                     <LogOut className="h-4 w-4" />
                   </button>
