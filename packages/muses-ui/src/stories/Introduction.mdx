@@ -8,7 +8,25 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 **Tech stack:** React + TailwindCSS v4 + lucide-react.
 
-## 사용법
+## Claude Code 스킬 (권장)
+
+Claude Code에서 디자인 시스템을 자동 적용하려면 `muses` 스킬을 설치하세요.
+
+```bash
+/plugin marketplace add CP-research/Muses
+/plugin install muses
+```
+
+설치 후 `/muses` 스킬이 활성화되며, UI 작업 요청 시 **`@cp-research/muses-ui` 설치·셋업을 자동으로 수행**하고(필요 시 `read:packages` PAT만 한 번 요청) 컴포넌트를 적용합니다. 패키지를 못 쓰는 환경이면 내장된 디자인 규격대로 직접 구현합니다.
+
+### AI 도구용 리소스 (llms.txt)
+
+Cursor·Windsurf 등 다른 AI 도구에서는 아래를 컨텍스트로 참조하세요.
+
+- 인덱스: [`/llms.txt`](https://storybook.counterpointresearch.com/llms.txt)
+- 전체본: [`/llms-full.txt`](https://storybook.counterpointresearch.com/llms-full.txt)
+
+## 사용법 (수동 설치)
 
 GitHub Packages(private)에 publish됩니다. 프로젝트 `.npmrc`에 스코프 레지스트리를 등록한 뒤 설치하세요:
 

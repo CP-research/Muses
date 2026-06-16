@@ -351,3 +351,28 @@ Major Third (1.250) 스케일 기반:
 - 모바일에서 사이드바 항상 표시
 - `text-lg` 이상을 본문 텍스트에 사용
 - 중립 회색 그림자(`rgba(0,0,0,...)`) 사용
+
+---
+
+## 참고 리소스 (llms.txt)
+
+이 스킬의 외부 리소스. 더 깊은 컨텍스트가 필요하면 아래를 가져와 참조한다.
+
+### 인덱스 / 전체본
+- [llms.txt (인덱스)](https://storybook.counterpointresearch.com/llms.txt): 디자인 시스템 리소스 큐레이션 링크
+- [llms-full.txt (전체본)](https://storybook.counterpointresearch.com/llms-full.txt): 이 규격(SKILL.md) + 라이브러리 README를 합친 단일 파일
+
+### Docs
+- [디자인 시스템 규격 (SKILL.md, raw)](https://raw.githubusercontent.com/CP-research/Muses/main/plugins/muses/skills/muses/SKILL.md): 진실의 원천
+- [컴포넌트 라이브러리 README](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/README.md): 설치·셋업
+- [Live Storybook](https://storybook.counterpointresearch.com): 시각 레퍼런스
+- [npm 패키지 (GitHub Packages)](https://github.com/orgs/CP-research/packages/npm/package/muses-ui): `@cp-research/muses-ui`
+
+### Components (source)
+- [Sidebar](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Sidebar/Sidebar.tsx): 로고-클릭 접기, 인라인 버전, 접이식 카테고리, 프로필 푸터
+- [Header / Breadcrumb](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Header/Header.tsx)
+- [Button](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Button/Button.tsx)
+- [Badge](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Badge/Badge.tsx)
+- [Input](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Input/Input.tsx)
+- [Card](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/components/Card/Card.tsx)
+- [Design tokens (theme.css)](https://raw.githubusercontent.com/CP-research/Muses/main/packages/muses-ui/src/styles/theme.css)
