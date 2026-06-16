@@ -5,6 +5,14 @@
   "license": "UNLICENSED",
   "private": false,
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CP-research/Muses.git",
+    "directory": "packages/muses-ui"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "sideEffects": [
     "**/*.css"
   ],
@@ -26,7 +34,8 @@
     "build": "vite build && tsc -p tsconfig.build.json --emitDeclarationOnly && cp src/styles/theme.css dist/theme.css",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "react": ">=18",

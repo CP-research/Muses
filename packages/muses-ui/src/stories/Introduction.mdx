@@ -10,6 +10,14 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 ## 사용법
 
+GitHub Packages(private)에 publish됩니다. 프로젝트 `.npmrc`에 스코프 레지스트리를 등록한 뒤 설치하세요:
+
+```ini
+# .npmrc
+@cp-research:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
 ```bash
 npm install @cp-research/muses-ui
 ```

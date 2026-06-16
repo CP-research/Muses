@@ -18,7 +18,12 @@ Tech Stack: React + TailwindCSS v4 + lucide-react.
 
 이 디자인 시스템은 **실제 컴포넌트 라이브러리로 구현**되어 있다. 아래 스펙(섹션 1~3)을 프로즈에서 재구현하지 말고, **먼저 라이브러리 컴포넌트를 사용**하라.
 
-- **npm 패키지**: `@cp-research/muses-ui` (React + Tailwind v4)
+- **npm 패키지**: `@cp-research/muses-ui` — **GitHub Packages(private)**에 publish
+  - 설치 전 프로젝트 `.npmrc`에 스코프 레지스트리 등록 필요:
+    ```ini
+    @cp-research:registry=https://npm.pkg.github.com
+    //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}   # read:packages 스코프 PAT
+    ```
 - **Storybook (시각적 진실의 원천)**: https://storybook.counterpointresearch.com
 - **소스 코드**: 이 repo의 `packages/muses-ui/src/components/`
 

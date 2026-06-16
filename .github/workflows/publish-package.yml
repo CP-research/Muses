@@ -1,0 +1,48 @@
+name: Publish Package
+
+# Publishes @cp-research/muses-ui to GitHub Packages (private registry).
+#
+# No extra secrets needed — the built-in GITHUB_TOKEN authenticates against
+# GitHub Packages (requires `packages: write` permission, set below).
+#
+# Trigger either by:
+#   • pushing a tag like `v0.1.0`, or
+#   • running the workflow manually (Actions → Publish Package → Run workflow).
+#
+# Bump packages/muses-ui/package.json "version" before tagging — npm refuses to
+# republish an existing version.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: "@cp-research"
+          cache: npm
+          cache-dependency-path: packages/muses-ui/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/muses-ui
+        run: npm ci
+
+      # `npm publish` runs `prepublishOnly` (build) automatically.
+      - name: Publish to GitHub Packages
+        working-directory: packages/muses-ui
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

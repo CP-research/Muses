@@ -5,6 +5,18 @@ The Storybook is the visual source of truth.
 
 ## Install
 
+This package is published to **GitHub Packages** (private). Point the
+`@cp-research` scope at the GitHub registry in your project's `.npmrc`:
+
+```ini
+# .npmrc
+@cp-research:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+`GITHUB_TOKEN` must be a GitHub personal access token with the `read:packages`
+scope (export it in your shell / CI env). Then:
+
 ```bash
 npm install @cp-research/muses-ui
 ```
