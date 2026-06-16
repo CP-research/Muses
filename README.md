@@ -78,8 +78,10 @@ git commit -am "chore: release muses-ui vX.Y.Z" && git tag vX.Y.Z && git push --
 
 ### 1. Marketplace 등록
 
+HTTPS URL로 등록한다 (`owner/repo` 단축형은 SSH로 clone을 시도해 SSH 키가 없으면 실패한다):
+
 ```bash
-/plugin marketplace add CP-research/Muses
+/plugin marketplace add https://github.com/CP-research/Muses.git
 ```
 
 ### 2. Plugin 설치
