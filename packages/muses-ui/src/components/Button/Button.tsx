@@ -4,15 +4,15 @@ import { cn } from "../../lib/cn";
 
 const buttonVariants = cva(
   // base
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/20 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary-200 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         primary:
-          "bg-primary text-white hover:bg-primary/90",
+          "bg-primary text-white hover:bg-primary-600",
         secondary:
-          "border border-border bg-surface text-text-main hover:bg-slate-50",
-        link: "text-primary underline-offset-4 hover:text-secondary hover:underline",
+          "border border-border bg-surface text-text-main hover:bg-grey-50",
+        link: "text-primary underline-offset-4 hover:text-primary-700 hover:underline",
       },
       size: {
         sm: "h-8 px-3 text-xs",

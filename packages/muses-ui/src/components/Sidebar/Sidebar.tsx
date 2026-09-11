@@ -81,8 +81,8 @@ const leafClasses = (active?: boolean) =>
   cn(
     "flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium",
     active
-      ? "bg-primary/10 font-semibold text-primary"
-      : "text-text-muted hover:bg-slate-50 hover:text-text-main",
+      ? "bg-primary-50 font-semibold text-primary-700"
+      : "text-text-muted hover:bg-grey-50 hover:text-text-main",
   );
 
 /** A single leaf item inside the expanded nav. */
@@ -203,7 +203,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
               aria-expanded={!collapsed}
               className={cn(
-                "shrink-0 cursor-pointer rounded-lg transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20",
+                "shrink-0 cursor-pointer rounded-lg transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200",
                 collapsed && "lg:mx-auto",
               )}
             >
@@ -265,8 +265,8 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                       className={cn(
                         "flex cursor-pointer justify-center rounded-lg py-2.5",
                         item.active
-                          ? "bg-primary/10 text-primary"
-                          : "text-text-muted hover:bg-slate-50 hover:text-text-main",
+                          ? "bg-primary-50 text-primary-700"
+                          : "text-text-muted hover:bg-grey-50 hover:text-text-main",
                       )}
                     >
                       <Icon className="h-5 w-5 shrink-0" />
@@ -293,7 +293,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                     className="h-9 w-9 shrink-0 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-50 text-xs font-semibold text-primary-700">
                     {initials(profile.name)}
                   </div>
                 )}
@@ -316,7 +316,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                     onClick={profile.onLogout}
                     aria-label="Log out"
                     title="Log out"
-                    className="shrink-0 cursor-pointer rounded-lg p-1.5 text-text-muted hover:bg-slate-50 hover:text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+                    className="shrink-0 cursor-pointer rounded-lg p-1.5 text-text-muted hover:bg-grey-50 hover:text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200"
                   >
                     <LogOut className="h-4 w-4" />
                   </button>

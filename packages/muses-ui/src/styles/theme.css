@@ -4,17 +4,116 @@
  * Consumers (Tailwind v4 apps) should `@import "@cp-research/muses-ui/theme.css"`
  * into their main CSS so that semantic utilities (bg-primary, text-text-main,
  * border-border, font-sans, …) and the brand font are available.
+ *
+ * ── How this palette is built ────────────────────────────────────────────────
+ * Every colour is a fixed 10-step scale (50 → 900) defined up front. Never
+ * invent a shade on the fly with opacity modifiers (`bg-primary/10`) or
+ * preprocessor lighten()/darken() — that is how you end up with 35 slightly
+ * different reds. Pick the nearest step from the scale instead.
+ *
+ * Scales were built by fixing the base (500), then the two edges (50 / 900),
+ * then filling 700 / 300 and finally 800 / 600 / 400 / 200.
+ * Existing brand values are pinned so nothing shifts:
+ *   primary-500 #EE1C24 · secondary-700 #913134 · success-500 #10B981
+ *   grey-500 #717171 · grey-200 #E2E2E2
+ * ────────────────────────────────────────────────────────────────────────────
  */
 @theme {
-  /* Color tokens — each key becomes a Tailwind color (bg-*, text-*, border-*). */
-  --color-background: #f8fafc; /* page background (Slate 50) */
-  --color-surface: #ffffff; /* card / panel background */
-  --color-primary: #ee1c24; /* brand primary (Red) */
-  --color-secondary: #913134; /* brand secondary (Dark Red) */
-  --color-text-main: #000000; /* body text */
-  --color-text-muted: #717171; /* secondary text */
-  --color-accent: #10b981; /* success / positive (Emerald 500) */
-  --color-border: #e2e2e2; /* borders */
+  /* grey — neutral — text, backgrounds, panels, borders */
+  --color-grey-50: #fafafa;
+  --color-grey-100: #f5f5f5;
+  --color-grey-200: #e2e2e2; /* previous --color-border, unchanged */
+  --color-grey-300: #d1d1d1;
+  --color-grey-400: #a6a6a6;
+  --color-grey-500: #717171; /* previous --color-text-muted, unchanged */
+  --color-grey-600: #595959;
+  --color-grey-700: #424242;
+  --color-grey-800: #2b2b2b;
+  --color-grey-900: #1a1a1a;
+
+  /* primary — brand red — primary actions, active nav */
+  --color-primary-50: #fef0f1;
+  --color-primary-100: #fdddde;
+  --color-primary-200: #fbbcbe;
+  --color-primary-300: #f79195;
+  --color-primary-400: #f3595e;
+  --color-primary-500: #ee1c24; /* brand red, unchanged */
+  --color-primary-600: #d31219;
+  --color-primary-700: #aa131a;
+  --color-primary-800: #81131b;
+  --color-primary-900: #5e1218;
+
+  /* secondary — muted brand red — supporting brand accents */
+  --color-secondary-50: #faf0f0;
+  --color-secondary-100: #f5e0e1;
+  --color-secondary-200: #ecc6c7;
+  --color-secondary-300: #df9fa2;
+  --color-secondary-400: #c85f63;
+  --color-secondary-500: #b63e42;
+  --color-secondary-600: #a3383c;
+  --color-secondary-700: #913134; /* brand dark red, unchanged */
+  --color-secondary-800: #71282a;
+  --color-secondary-900: #562021;
+
+  /* success — positive / completed */
+  --color-success-50: #eefcf7;
+  --color-success-100: #d3f8ec;
+  --color-success-200: #a5f3d9;
+  --color-success-300: #63eebf;
+  --color-success-400: #1ce9a4;
+  --color-success-500: #10b981; /* previous --color-accent, unchanged */
+  --color-success-600: #0d9b6e;
+  --color-success-700: #0b7f5c;
+  --color-success-800: #0a6149;
+  --color-success-900: #084938;
+
+  /* warning — caution / pending */
+  --color-warning-50: #fefaeb;
+  --color-warning-100: #fdf1ce;
+  --color-warning-200: #fcdf9c;
+  --color-warning-300: #f9c762;
+  --color-warning-400: #f6b131;
+  --color-warning-500: #f59f0a;
+  --color-warning-600: #d37e09;
+  --color-warning-700: #a85e0b;
+  --color-warning-800: #83450b;
+  --color-warning-900: #65320b;
+
+  /* danger — destructive / error (deeper crimson so it never reads as the brand red) */
+  --color-danger-50: #fdecef;
+  --color-danger-100: #fcd9df;
+  --color-danger-200: #f8b9c3;
+  --color-danger-300: #f28898;
+  --color-danger-400: #e93f59;
+  --color-danger-500: #cc1934;
+  --color-danger-600: #b11630;
+  --color-danger-700: #90142a;
+  --color-danger-800: #6e1224;
+  --color-danger-900: #51101e;
+
+  /* info — neutral information */
+  --color-info-50: #f0f6fe;
+  --color-info-100: #ddebfd;
+  --color-info-200: #bbd7fb;
+  --color-info-300: #8bb9f8;
+  --color-info-400: #669ff5;
+  --color-info-500: #3f84f3;
+  --color-info-600: #1963eb;
+  --color-info-700: #154cc1;
+  --color-info-800: #163b92;
+  --color-info-900: #152d6f;
+
+  /* ── Semantic aliases ──────────────────────────────────────────────────────
+     Literal values (not var() references) so Tailwind v4 always emits them.
+     Keep in sync with the scales above. */
+  --color-background: #fafafa; /* grey-50  — page background */
+  --color-surface: #ffffff; /* pure white — card / panel background */
+  --color-primary: #ee1c24; /* primary-500 — brand primary (Red) */
+  --color-secondary: #913134; /* secondary-700 — brand secondary (Dark Red) */
+  --color-text-main: #1a1a1a; /* grey-900 — body text (true black looks unnatural) */
+  --color-text-muted: #717171; /* grey-500 — secondary text */
+  --color-accent: #10b981; /* success-500 — success / positive */
+  --color-border: #e2e2e2; /* grey-200 — borders */
 
   /* Brand font — generates `font-sans`. */
   --font-sans:

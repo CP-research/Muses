@@ -95,13 +95,13 @@ import { Sidebar, Header, Breadcrumb, Card, Button, Badge, Input } from "@cp-res
 **구조 (위→아래):**
 1. **헤더 영역 (로고 + 서비스명 + 버전)** — 상단 고정, `h-14 px-3 border-b border-border`, `flex items-center gap-2`
    - **로고 = 접기/펼치기 토글**: 로고를 `<button>`으로 감싸 클릭 시 사이드바 접힘/펼침 토글 (`onCollapsedChange` 또는 내부 상태). 별도 토글 아이콘은 두지 않는다.
-     - 로고: `h-8 w-8` (SVG 또는 이미지), 버튼: `shrink-0 rounded-lg hover:opacity-70 focus-visible:ring-2 focus-visible:ring-primary/20`
+     - 로고: `h-8 w-8` (SVG 또는 이미지), 버튼: `shrink-0 rounded-lg hover:opacity-70 focus-visible:ring-2 focus-visible:ring-primary-200`
    - 서비스명: `text-sm font-bold tracking-tight text-text-main`
    - **버전**: 서비스명 **바로 오른쪽**에 인라인 표시 — `text-[10px] font-semibold text-text-muted`, 형식 `v{major}.{minor}.{patch}` (서비스명 컨테이너는 `flex items-baseline gap-1.5`)
    - 축소 시(`lg:`): 서비스명·버전 `lg:hidden`, 로고 버튼만 `lg:mx-auto`로 중앙 표시 (로고 클릭으로 다시 펼침)
 2. **네비게이션** — `flex-1 overflow-y-auto py-2 px-2`
    - **단일 메뉴 아이템(leaf)**: `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium`, 아이콘 `h-5 w-5 shrink-0`
-     - 기본: `text-text-muted hover:bg-slate-50 hover:text-text-main` / 활성: `bg-primary/10 text-primary font-semibold`
+     - 기본: `text-text-muted hover:bg-grey-50 hover:text-text-main` / 활성: `bg-primary-50 text-primary-700 font-semibold`
    - **1차 카테고리(접기 가능)** — 아래 `1-7` 참조
    - 축소 시(`lg:`): 별도 rail로 모든 leaf 아이콘만 평면 표시(카테고리 헤더 없음), 아이콘 중앙 정렬 + `title`/`aria-label`로 라벨 제공
 
@@ -188,66 +188,100 @@ transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
 사이드바 **하단 고정** 프로필 영역. 좌→우 순서: **동그라미 아바타 → 이름·이메일 → 로그아웃**.
 
 - 컨테이너: `border-t border-border p-3`, 내부 `flex items-center gap-2.5`
-- **아바타**: `h-9 w-9 rounded-full` — 이미지(`object-cover`) 또는 이니셜 대체(`bg-primary/10 text-primary text-xs font-semibold`)
+- **아바타**: `h-9 w-9 rounded-full` — 이미지(`object-cover`) 또는 이니셜 대체(`bg-primary-50 text-primary-700 text-xs font-semibold`)
 - **이름**: `text-sm font-medium text-text-main truncate`
 - **이메일**: `text-xs text-text-muted truncate` (이름 아래 세로 정렬, `flex flex-col`)
-- **로그아웃**: `LogOut` 아이콘 버튼 (`h-4 w-4`), `p-1.5 rounded-lg text-text-muted hover:bg-slate-50 hover:text-text-main`
+- **로그아웃**: `LogOut` 아이콘 버튼 (`h-4 w-4`), `p-1.5 rounded-lg text-text-muted hover:bg-grey-50 hover:text-text-main`
 - 축소 시(`lg:`): 아바타만 중앙(`lg:justify-center`), 이름·이메일·로그아웃 `lg:hidden`
 
 ---
 
 ## 2. Colors
 
-### 2-1. Design Tokens (CSS Custom Properties)
+> **철칙 — shade는 미리 정의된 것만 쓴다.**
+> 색이 더 밝거나 어두워야 하면 **스케일에서 가장 가까운 단계를 고른다.**
+> `bg-primary/10`, `hover:bg-primary/90` 같은 **opacity 변형이나 `lighten()`/`darken()`으로 즉석에서 shade를 만들지 않는다.**
+> 그렇게 하면 미묘하게 다른 빨강이 수십 개 생기고 컬러 시스템이 무의미해진다.
+> (예외: `bg-black/40` 같은 **오버레이/백드롭**은 투명도 자체가 목적이므로 허용.)
 
-TailwindCSS v4 `@theme` 또는 CSS 변수로 정의:
+### 2-1. Color Scales (Source of Truth)
 
-```css
-:root {
-  --color-background: #F8FAFC;   /* 페이지 배경 (Slate 50) */
-  --color-surface: #FFFFFF;       /* 카드/패널 배경 */
-  --color-primary: #EE1C24;       /* 브랜드 주색 (Red) */
-  --color-secondary: #913134;     /* 브랜드 보조색 (Dark Red) */
-  --color-text-main: #000000;     /* 본문 텍스트 */
-  --color-text-muted: #717171;    /* 보조 텍스트 */
-  --color-accent: #10B981;        /* 성공/긍정 (Emerald 500) */
-  --color-border: #E2E2E2;        /* 경계선 */
-}
+모든 색은 **50 → 900의 10단계 고정 스케일**로 정의된다. 정의 위치: `packages/muses-ui/src/styles/theme.css` (Tailwind v4 `@theme`).
+각 스케일은 base(앵커)를 먼저 잡고, 양 끝(50/900)을 정한 뒤, 700/300 → 800/600/400/200 순으로 채워 만들었다.
+
+| 스케일 | 용도 | 앵커 |
+|--------|------|------|
+| `grey` | 텍스트·배경·패널·경계선 — UI의 대부분 | `grey-500` `#717171` |
+| `primary` | 브랜드 레드. 주요 액션, 활성 내비 | `primary-500` `#EE1C24` |
+| `secondary` | 저채도 브랜드 레드. 보조 브랜드 강조 | `secondary-700` `#913134` |
+| `success` | 성공/완료 | `success-500` `#10B981` |
+| `warning` | 경고/대기 | `warning-500` `#F59F0A` |
+| `danger` | 파괴적 액션/에러 | `danger-500` `#CC1934` |
+| `info` | 정보/참고 | `info-500` `#3F84F3` |
+
+```
+grey       50 #FAFAFA · 100 #F5F5F5 · 200 #E2E2E2 · 300 #D1D1D1 · 400 #A6A6A6
+           500 #717171 · 600 #595959 · 700 #424242 · 800 #2B2B2B · 900 #1A1A1A
+primary    50 #FEF0F1 · 100 #FDDDDE · 200 #FBBCBE · 300 #F79195 · 400 #F3595E
+           500 #EE1C24 · 600 #D31219 · 700 #AA131A · 800 #81131B · 900 #5E1218
+secondary  50 #FAF0F0 · 100 #F5E0E1 · 200 #ECC6C7 · 300 #DF9FA2 · 400 #C85F63
+           500 #B63E42 · 600 #A3383C · 700 #913134 · 800 #71282A · 900 #562021
+success    50 #EEFCF7 · 100 #D3F8EC · 200 #A5F3D9 · 300 #63EEBF · 400 #1CE9A4
+           500 #10B981 · 600 #0D9B6E · 700 #0B7F5C · 800 #0A6149 · 900 #084938
+warning    50 #FEFAEB · 100 #FDF1CE · 200 #FCDF9C · 300 #F9C762 · 400 #F6B131
+           500 #F59F0A · 600 #D37E09 · 700 #A85E0B · 800 #83450B · 900 #65320B
+danger     50 #FDECEF · 100 #FCD9DF · 200 #F8B9C3 · 300 #F28898 · 400 #E93F59
+           500 #CC1934 · 600 #B11630 · 700 #90142A · 800 #6E1224 · 900 #51101E
+info       50 #F0F6FE · 100 #DDEBFD · 200 #BBD7FB · 300 #8BB9F8 · 400 #669FF5
+           500 #3F84F3 · 600 #1963EB · 700 #154CC1 · 800 #163B92 · 900 #152D6F
 ```
 
-### 2-2. Semantic Color Mapping
+**주의 — `danger` ≠ `primary`.** 브랜드 주색이 레드이므로, 파괴적 액션 색은 의도적으로 **더 깊은 크림슨**(`#CC1934`)으로 분리했다. 그래도 완전히 다른 색은 아니므로 **파괴적 액션에는 색만으로 의미를 전달하지 말고 라벨/아이콘을 함께** 쓴다.
 
-| 용도 | 색상 | Tailwind Class |
-|------|------|----------------|
-| 페이지 배경 | `#F8FAFC` | `bg-background` |
-| 카드/패널 | `#FFFFFF` | `bg-surface` |
-| 주요 액션 | `#EE1C24` | `bg-primary`, `text-primary` |
-| 보조 액션 | `#913134` | `bg-secondary` |
-| 본문 텍스트 | `#000000` | `text-text-main` |
-| 보조 텍스트 | `#717171` | `text-text-muted` |
-| 성공 | `#10B981` | `text-accent`, `bg-accent` |
-| 경계선 | `#E2E2E2` | `border-border` |
+**주의 — grey는 순중립(H0/S0)이다.** 기존 배경 `#F8FAFC`(쿨 슬레이트)와 `#717171`/`#E2E2E2`(순중립)가 섞여 있던 것을 순중립으로 통일했다. 새 UI에서 `slate-*`, `zinc-*` 등 Tailwind 기본 회색을 쓰지 말고 `grey-*`를 쓴다.
+
+**주의 — 본문 텍스트는 순검정이 아니다.** `#000000` → `grey-900 #1A1A1A`. 순검정은 부자연스럽게 보인다.
+
+### 2-2. Semantic Aliases
+
+스케일 위에 얹은 축약 별칭. 제품 코드는 대체로 이쪽을 쓰고, 특정 shade가 필요할 때만 `bg-primary-600`처럼 스케일 단계를 직접 쓴다.
+
+| 용도 | 별칭 | 매핑 | 값 |
+|------|------|------|-----|
+| 페이지 배경 | `bg-background` | `grey-50` | `#FAFAFA` |
+| 카드/패널 | `bg-surface` | white | `#FFFFFF` |
+| 주요 액션 | `bg-primary`, `text-primary` | `primary-500` | `#EE1C24` |
+| 보조 브랜드 | `bg-secondary` | `secondary-700` | `#913134` |
+| 본문 텍스트 | `text-text-main` | `grey-900` | `#1A1A1A` |
+| 보조 텍스트 | `text-text-muted` | `grey-500` | `#717171` |
+| 성공 | `text-accent`, `bg-accent` | `success-500` | `#10B981` |
+| 경계선 | `border-border` | `grey-200` | `#E2E2E2` |
 
 ### 2-3. Status Colors
 
-상태 표현에 사용하는 색상 조합:
+패턴: **`bg-{scale}-100` + `text-{scale}-800`** (대비 6.5:1 이상 보장).
 
 | 상태 | 배경 | 텍스트 | 용도 |
 |------|------|--------|------|
-| Draft/Default | `bg-slate-100` | `text-slate-700` | 초안, 비활성 |
-| Warning | `bg-amber-100` | `text-amber-700` | 경고, 대기 |
-| Active/Danger | `bg-red-100` | `text-red-700` | 활성, 긴급 |
-| Success | `bg-emerald-100` | `text-emerald-700` | 완료, 성공 |
-| Info | `bg-blue-100` | `text-blue-700` | 정보, 참고 |
+| Draft/Default | `bg-grey-100` | `text-grey-800` | 초안, 비활성 |
+| Warning | `bg-warning-100` | `text-warning-800` | 경고, 대기 |
+| Danger | `bg-danger-100` | `text-danger-800` | 파괴적 액션, 에러 |
+| Success | `bg-success-100` | `text-success-800` | 완료, 성공 |
+| Info | `bg-info-100` | `text-info-800` | 정보, 참고 |
 
 ### 2-4. Interactive State Colors
 
 | 요소 | 기본 | Hover | Focus | Disabled |
 |------|------|-------|-------|----------|
-| Primary Button | `bg-primary text-white` | `bg-primary/90` | `ring-2 ring-primary/20` | `opacity-50 pointer-events-none` |
-| Secondary Button | `bg-white border-border` | `bg-slate-50` | `ring-2 ring-primary/20` | `opacity-50` |
-| Link | `text-primary` | `text-secondary` | `ring-2 ring-primary/20` | `text-text-muted` |
-| Input | `border-border` | `border-slate-300` | `border-primary ring-2 ring-primary/20` | `bg-slate-50 text-text-muted` |
+| Primary Button | `bg-primary text-white` | `bg-primary-600` | `ring-2 ring-primary-200` | `opacity-50 pointer-events-none` |
+| Secondary Button | `bg-surface border-border` | `bg-grey-50` | `ring-2 ring-primary-200` | `opacity-50` |
+| Link | `text-primary` | `text-primary-700` | `ring-2 ring-primary-200` | `text-text-muted` |
+| Input | `border-border` | `border-grey-300` | `border-primary ring-2 ring-primary-200` | `bg-grey-50 text-text-muted` |
+| Nav item | `text-text-muted` | `bg-grey-50 text-text-main` | `ring-2 ring-primary-200` | — |
+| Nav item (active) | `bg-primary-50 text-primary-700 font-semibold` | — | `ring-2 ring-primary-200` | — |
+
+**흰 텍스트를 얹을 때의 최소 단계** (대비 4.5:1): `primary-600`, `secondary-500`, `danger-500`, `success-700`, `warning-700`, `info-600`.
+`success-500`/`warning-500` 위에 흰 글씨를 올리면 대비가 3:1 미만이므로 쓰지 않는다.
 
 ### 2-5. Shadow Colors
 
